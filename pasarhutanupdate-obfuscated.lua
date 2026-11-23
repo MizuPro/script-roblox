@@ -247,6 +247,8 @@
             server_time = tonumber(vData.server_time) or clientNow,
             server_offset = (tonumber(vData.server_time) or clientNow) - clientNow,
             expires_epoch = (tonumber(vData.server_time) or clientNow) + (tonumber(vData.remaining_sec) or 0),
+            base_clock = os.clock(),
+            base_remaining = tonumber(vData.remaining_sec) or 0,
         }
 
         local fn, compErr = loadFn(decrypted)
