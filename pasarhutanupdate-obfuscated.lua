@@ -9,6 +9,7 @@
         local Http = game:GetService("HttpService")
         local Players = game:GetService("Players")
         local UserInputService = game:GetService("UserInputService")
+        local TweenService = game:GetService("TweenService")
         local okAnal, Analytics = pcall(function() return game:GetService("RbxAnalyticsService") end)
         local okCore, CoreGuiSvc = pcall(function() return game:GetService("CoreGui") end)
 
@@ -65,25 +66,78 @@
             return
         end
 
-        -- UI Login .dominion X (Matte-Black & Cream) - Langsung tampil instan!
+        -- UI Login .dominion X (Matte-Black & Cream Pro) - Langsung tampil instan!
         local win = Instance.new("Frame")
-        win.Size = UDim2.new(0, 410, 0, 224)
+        win.Size = UDim2.new(0, 440, 0, 294)
         win.AnchorPoint = Vector2.new(0.5, 0.5)
         win.Position = UDim2.new(0.5, 0, 0.5, 0)
-        win.BackgroundColor3 = Color3.fromRGB(11, 11, 13)
+        win.BackgroundColor3 = Color3.fromRGB(11, 11, 14)
         win.BorderSizePixel = 0
         win.Active = true
+        win.ClipsDescendants = false
         win.Parent = sg
-        Instance.new("UICorner", win).CornerRadius = UDim.new(0, 10)
+        Instance.new("UICorner", win).CornerRadius = UDim.new(0, 12)
         local stroke = Instance.new("UIStroke", win)
         stroke.Color = Color3.fromRGB(48, 48, 60)
         stroke.Thickness = 1.2
 
-        -- Drag support pada jendela login
+        local winScale = Instance.new("UIScale", win)
+        winScale.Scale = 0.92
+        TweenService:Create(winScale, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+
+        local shadow = Instance.new("ImageLabel")
+        shadow.Name = "Shadow"
+        shadow.BackgroundTransparency = 1
+        shadow.Image = "rbxassetid://6014261993"
+        shadow.ImageColor3 = Color3.new(0, 0, 0)
+        shadow.ImageTransparency = 0.42
+        shadow.ScaleType = Enum.ScaleType.Slice
+        shadow.SliceCenter = Rect.new(49, 49, 450, 450)
+        shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+        shadow.Position = UDim2.new(0.5, 0, 0.5, 6)
+        shadow.Size = UDim2.new(1, 34, 1, 34)
+        shadow.ZIndex = 0
+        shadow.Parent = win
+
+        local body = Instance.new("Frame")
+        body.Size = UDim2.new(1, 0, 1, 0)
+        body.BackgroundColor3 = Color3.fromRGB(11, 11, 14)
+        body.BorderSizePixel = 0
+        body.ClipsDescendants = true
+        body.ZIndex = 2
+        body.Parent = win
+        Instance.new("UICorner", body).CornerRadius = UDim.new(0, 12)
+
+        local topStrip = Instance.new("Frame")
+        topStrip.Size = UDim2.new(1, 0, 0, 2)
+        topStrip.BackgroundColor3 = Color3.fromRGB(245, 239, 230)
+        topStrip.BorderSizePixel = 0
+        topStrip.ZIndex = 4
+        topStrip.Parent = body
+        local topGrad = Instance.new("UIGradient", topStrip)
+        topGrad.Color = ColorSequence.new(Color3.fromRGB(245, 239, 230), Color3.fromRGB(120, 114, 106))
+
+        -- Header Bar (Draggable)
+        local header = Instance.new("Frame")
+        header.Size = UDim2.new(1, 0, 0, 50)
+        header.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+        header.BorderSizePixel = 0
+        header.Active = true
+        header.ZIndex = 3
+        header.Parent = body
+
+        local hdrLine = Instance.new("Frame")
+        hdrLine.Size = UDim2.new(1, -28, 0, 1)
+        hdrLine.Position = UDim2.new(0, 14, 1, -1)
+        hdrLine.BackgroundColor3 = Color3.fromRGB(36, 36, 46)
+        hdrLine.BorderSizePixel = 0
+        hdrLine.ZIndex = 4
+        hdrLine.Parent = header
+
         do
             local dragging = false
             local dragStart, startPos
-            win.InputBegan:Connect(function(inp)
+            header.InputBegan:Connect(function(inp)
                 if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
                     dragging = true
                     dragStart = inp.Position
@@ -103,98 +157,342 @@
             end)
         end
 
+        local mono = Instance.new("TextLabel")
+        mono.Size = UDim2.new(0, 32, 0, 32)
+        mono.Position = UDim2.new(0, 14, 0.5, -16)
+        mono.BackgroundColor3 = Color3.fromRGB(245, 239, 230)
+        mono.BorderSizePixel = 0
+        mono.Font = Enum.Font.GothamBold
+        mono.TextSize = 13
+        mono.TextColor3 = Color3.fromRGB(11, 11, 14)
+        mono.Text = ".dx"
+        mono.ZIndex = 4
+        mono.Parent = header
+        Instance.new("UICorner", mono).CornerRadius = UDim.new(0, 8)
+
         local title = Instance.new("TextLabel")
-        title.Size = UDim2.new(1, -56, 0, 36)
-        title.Position = UDim2.new(0, 16, 0, 6)
+        title.Size = UDim2.new(0, 175, 0, 18)
+        title.Position = UDim2.new(0, 56, 0, 8)
         title.BackgroundTransparency = 1
         title.Font = Enum.Font.GothamBold
-        title.TextSize = 15
+        title.TextSize = 14
         title.TextColor3 = Color3.fromRGB(245, 239, 230)
         title.TextXAlignment = Enum.TextXAlignment.Left
-        title.Text = ".dominion X  |  Aktivasi Lisensi"
-        title.Parent = win
+        title.Text = ".dominion X"
+        title.ZIndex = 4
+        title.Parent = header
+
+        local subTitle = Instance.new("TextLabel")
+        subTitle.Size = UDim2.new(0, 190, 0, 13)
+        subTitle.Position = UDim2.new(0, 56, 0, 27)
+        subTitle.BackgroundTransparency = 1
+        subTitle.Font = Enum.Font.GothamBold
+        subTitle.TextSize = 9
+        subTitle.TextColor3 = Color3.fromRGB(145, 145, 160)
+        subTitle.TextXAlignment = Enum.TextXAlignment.Left
+        subTitle.Text = "LICENSE AUTHENTICATION"
+        subTitle.ZIndex = 4
+        subTitle.Parent = header
+
+        local hwidBadge = Instance.new("Frame")
+        hwidBadge.Size = UDim2.new(0, 88, 0, 20)
+        hwidBadge.Position = UDim2.new(1, -134, 0.5, -10)
+        hwidBadge.BackgroundColor3 = Color3.fromRGB(22, 24, 30)
+        hwidBadge.BorderSizePixel = 0
+        hwidBadge.ZIndex = 4
+        hwidBadge.Parent = header
+        Instance.new("UICorner", hwidBadge).CornerRadius = UDim.new(0, 10)
+        local hwidStroke = Instance.new("UIStroke", hwidBadge)
+        hwidStroke.Color = Color3.fromRGB(48, 52, 66)
+        local hwidDot = Instance.new("Frame")
+        hwidDot.Size = UDim2.new(0, 6, 0, 6)
+        hwidDot.Position = UDim2.new(0, 8, 0.5, -3)
+        hwidDot.BackgroundColor3 = Color3.fromRGB(74, 222, 128)
+        hwidDot.BorderSizePixel = 0
+        hwidDot.ZIndex = 5
+        hwidDot.Parent = hwidBadge
+        Instance.new("UICorner", hwidDot).CornerRadius = UDim.new(0, 3)
+        local hwidTxt = Instance.new("TextLabel")
+        hwidTxt.Size = UDim2.new(1, -18, 1, 0)
+        hwidTxt.Position = UDim2.new(0, 17, 0, 0)
+        hwidTxt.BackgroundTransparency = 1
+        hwidTxt.Font = Enum.Font.GothamBold
+        hwidTxt.TextSize = 8
+        hwidTxt.TextColor3 = Color3.fromRGB(207, 199, 186)
+        hwidTxt.TextXAlignment = Enum.TextXAlignment.Left
+        hwidTxt.Text = "HWID LOCK"
+        hwidTxt.ZIndex = 5
+        hwidTxt.Parent = hwidBadge
 
         local closeBtn = Instance.new("TextButton")
-        closeBtn.Size = UDim2.new(0, 24, 0, 24)
-        closeBtn.Position = UDim2.new(1, -34, 0, 12)
-        closeBtn.BackgroundColor3 = Color3.fromRGB(24, 24, 30)
+        closeBtn.Size = UDim2.new(0, 26, 0, 26)
+        closeBtn.Position = UDim2.new(1, -38, 0.5, -13)
+        closeBtn.BackgroundColor3 = Color3.fromRGB(24, 24, 32)
         closeBtn.Font = Enum.Font.GothamBold
         closeBtn.TextSize = 12
         closeBtn.TextColor3 = Color3.fromRGB(248, 113, 113)
         closeBtn.Text = "X"
+        closeBtn.AutoButtonColor = false
         closeBtn.BorderSizePixel = 0
-        closeBtn.Parent = win
-        Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 5)
+        closeBtn.ZIndex = 4
+        closeBtn.Parent = header
+        Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
+        closeBtn.MouseEnter:Connect(function()
+            TweenService:Create(closeBtn, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(214, 70, 70), TextColor3 = Color3.new(1, 1, 1) }):Play()
+        end)
+        closeBtn.MouseLeave:Connect(function()
+            TweenService:Create(closeBtn, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(24, 24, 32), TextColor3 = Color3.fromRGB(248, 113, 113) }):Play()
+        end)
         closeBtn.MouseButton1Click:Connect(function() sg:Destroy() end)
 
-        local sub = Instance.new("TextLabel")
-        sub.Size = UDim2.new(1, -32, 0, 18)
-        sub.Position = UDim2.new(0, 16, 0, 44)
-        sub.BackgroundTransparency = 1
-        sub.Font = Enum.Font.Gotham
-        sub.TextSize = 11
-        sub.TextColor3 = Color3.fromRGB(160, 160, 175)
-        sub.TextXAlignment = Enum.TextXAlignment.Left
-        sub.Text = "Masukkan License Key (HWID Lock otomatis di perangkat ini):"
-        sub.Parent = win
+        -- Player Identity Strip
+        local idCard = Instance.new("Frame")
+        idCard.Size = UDim2.new(1, -28, 0, 42)
+        idCard.Position = UDim2.new(0, 14, 0, 58)
+        idCard.BackgroundColor3 = Color3.fromRGB(17, 17, 22)
+        idCard.BorderSizePixel = 0
+        idCard.ZIndex = 3
+        idCard.Parent = body
+        Instance.new("UICorner", idCard).CornerRadius = UDim.new(0, 8)
+        local idStroke = Instance.new("UIStroke", idCard)
+        idStroke.Color = Color3.fromRGB(38, 38, 48)
+
+        local avImg = Instance.new("ImageLabel")
+        avImg.Size = UDim2.new(0, 28, 0, 28)
+        avImg.Position = UDim2.new(0, 8, 0.5, -14)
+        avImg.BackgroundColor3 = Color3.fromRGB(28, 28, 36)
+        avImg.BorderSizePixel = 0
+        avImg.Image = ""
+        avImg.ZIndex = 4
+        avImg.Parent = idCard
+        Instance.new("UICorner", avImg).CornerRadius = UDim.new(0, 14)
+        task.spawn(function()
+            local okT, url = pcall(function()
+                return Players:GetUserThumbnailAsync(lp.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+            end)
+            if okT and type(url) == "string" and url ~= "" and avImg and avImg.Parent then
+                avImg.Image = url
+            end
+        end)
+
+        local dispName = (lp.DisplayName and lp.DisplayName ~= "" and lp.DisplayName) or lp.Name
+        local pNameLbl = Instance.new("TextLabel")
+        pNameLbl.Size = UDim2.new(1, -142, 0, 15)
+        pNameLbl.Position = UDim2.new(0, 44, 0, 6)
+        pNameLbl.BackgroundTransparency = 1
+        pNameLbl.Font = Enum.Font.GothamBold
+        pNameLbl.TextSize = 11
+        pNameLbl.TextColor3 = Color3.fromRGB(245, 239, 230)
+        pNameLbl.TextXAlignment = Enum.TextXAlignment.Left
+        pNameLbl.TextTruncate = Enum.TextTruncate.AtEnd
+        pNameLbl.Text = dispName
+        pNameLbl.ZIndex = 4
+        pNameLbl.Parent = idCard
+
+        local pSubLbl = Instance.new("TextLabel")
+        pSubLbl.Size = UDim2.new(1, -142, 0, 12)
+        pSubLbl.Position = UDim2.new(0, 44, 0, 22)
+        pSubLbl.BackgroundTransparency = 1
+        pSubLbl.Font = Enum.Font.Gotham
+        pSubLbl.TextSize = 9
+        pSubLbl.TextColor3 = Color3.fromRGB(130, 130, 146)
+        pSubLbl.TextXAlignment = Enum.TextXAlignment.Left
+        pSubLbl.Text = "@" .. tostring(lp.Name) .. "  ·  ID " .. tostring(lp.UserId)
+        pSubLbl.ZIndex = 4
+        pSubLbl.Parent = idCard
+
+        local readyPill = Instance.new("TextLabel")
+        readyPill.Size = UDim2.new(0, 86, 0, 20)
+        readyPill.Position = UDim2.new(1, -94, 0.5, -10)
+        readyPill.BackgroundColor3 = Color3.fromRGB(22, 34, 28)
+        readyPill.BorderSizePixel = 0
+        readyPill.Font = Enum.Font.GothamBold
+        readyPill.TextSize = 8
+        readyPill.TextColor3 = Color3.fromRGB(74, 222, 128)
+        readyPill.Text = "CLIENT READY"
+        readyPill.ZIndex = 4
+        readyPill.Parent = idCard
+        Instance.new("UICorner", readyPill).CornerRadius = UDim.new(0, 6)
+
+        -- License Key Input Label & Hint
+        local keyLbl = Instance.new("TextLabel")
+        keyLbl.Size = UDim2.new(0, 160, 0, 14)
+        keyLbl.Position = UDim2.new(0, 14, 0, 110)
+        keyLbl.BackgroundTransparency = 1
+        keyLbl.Font = Enum.Font.GothamBold
+        keyLbl.TextSize = 10
+        keyLbl.TextColor3 = Color3.fromRGB(207, 199, 186)
+        keyLbl.TextXAlignment = Enum.TextXAlignment.Left
+        keyLbl.Text = "LICENSE KEY"
+        keyLbl.ZIndex = 3
+        keyLbl.Parent = body
+
+        local fmtHint = Instance.new("TextLabel")
+        fmtHint.Size = UDim2.new(0, 220, 0, 14)
+        fmtHint.Position = UDim2.new(1, -234, 0, 110)
+        fmtHint.BackgroundTransparency = 1
+        fmtHint.Font = Enum.Font.Code
+        fmtHint.TextSize = 9
+        fmtHint.TextColor3 = Color3.fromRGB(115, 115, 130)
+        fmtHint.TextXAlignment = Enum.TextXAlignment.Right
+        fmtHint.Text = "DMX-XXXXX-XXXXX-XXXXX-XXXXX"
+        fmtHint.ZIndex = 3
+        fmtHint.Parent = body
+
+        local hasClip = (type(getclipboard) == "function")
+        local inputWrap = Instance.new("Frame")
+        inputWrap.Size = UDim2.new(1, -28, 0, 38)
+        inputWrap.Position = UDim2.new(0, 14, 0, 127)
+        inputWrap.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
+        inputWrap.BorderSizePixel = 0
+        inputWrap.ZIndex = 3
+        inputWrap.Parent = body
+        Instance.new("UICorner", inputWrap).CornerRadius = UDim.new(0, 8)
+        local bStroke = Instance.new("UIStroke", inputWrap)
+        bStroke.Color = Color3.fromRGB(52, 52, 66)
+        bStroke.Thickness = 1.1
 
         local box = Instance.new("TextBox")
-        box.Size = UDim2.new(1, -96, 0, 34)
-        box.Position = UDim2.new(0, 16, 0, 68)
-        box.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
-        box.BorderSizePixel = 0
+        box.Size = UDim2.new(1, hasClip and -122 or -68, 1, 0)
+        box.Position = UDim2.new(0, 12, 0, 0)
+        box.BackgroundTransparency = 1
         box.Font = Enum.Font.Code
         box.TextSize = 12
         box.TextColor3 = Color3.fromRGB(245, 239, 230)
-        box.PlaceholderText = "DMX-XXXXX-XXXXX-XXXXX-XXXXX"
+        box.PlaceholderText = "Tempel atau ketik license key Anda..."
         box.PlaceholderColor3 = Color3.fromRGB(95, 95, 110)
+        box.TextXAlignment = Enum.TextXAlignment.Left
         box.ClearTextOnFocus = false
         box.Text = ""
-        box.Parent = win
-        Instance.new("UICorner", box).CornerRadius = UDim.new(0, 6)
-        local bStroke = Instance.new("UIStroke", box)
-        bStroke.Color = Color3.fromRGB(52, 52, 65)
+        box.ZIndex = 4
+        box.Parent = inputWrap
+        box.Focused:Connect(function()
+            TweenService:Create(bStroke, TweenInfo.new(0.15), { Color = Color3.fromRGB(245, 239, 230) }):Play()
+        end)
+        box.FocusLost:Connect(function()
+            TweenService:Create(bStroke, TweenInfo.new(0.15), { Color = Color3.fromRGB(52, 52, 66) }):Play()
+        end)
+
+        if hasClip then
+            local pasteBtn = Instance.new("TextButton")
+            pasteBtn.Size = UDim2.new(0, 48, 0, 26)
+            pasteBtn.Position = UDim2.new(1, -106, 0.5, -13)
+            pasteBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+            pasteBtn.BorderSizePixel = 0
+            pasteBtn.Font = Enum.Font.GothamBold
+            pasteBtn.TextSize = 9
+            pasteBtn.TextColor3 = Color3.fromRGB(245, 239, 230)
+            pasteBtn.Text = "PASTE"
+            pasteBtn.ZIndex = 4
+            pasteBtn.Parent = inputWrap
+            Instance.new("UICorner", pasteBtn).CornerRadius = UDim.new(0, 5)
+            pasteBtn.MouseButton1Click:Connect(function()
+                local okC, clip = pcall(getclipboard)
+                if okC and type(clip) == "string" then
+                    box.Text = clip:gsub("%s+", "")
+                end
+            end)
+        end
 
         local clearBtn = Instance.new("TextButton")
-        clearBtn.Size = UDim2.new(0, 58, 0, 34)
-        clearBtn.Position = UDim2.new(1, -74, 0, 68)
-        clearBtn.BackgroundColor3 = Color3.fromRGB(26, 26, 34)
+        clearBtn.Size = UDim2.new(0, 48, 0, 26)
+        clearBtn.Position = UDim2.new(1, -54, 0.5, -13)
+        clearBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
         clearBtn.BorderSizePixel = 0
         clearBtn.Font = Enum.Font.GothamBold
-        clearBtn.TextSize = 10
+        clearBtn.TextSize = 9
         clearBtn.TextColor3 = Color3.fromRGB(207, 199, 186)
         clearBtn.Text = "CLEAR"
-        clearBtn.Parent = win
-        Instance.new("UICorner", clearBtn).CornerRadius = UDim.new(0, 6)
+        clearBtn.ZIndex = 4
+        clearBtn.Parent = inputWrap
+        Instance.new("UICorner", clearBtn).CornerRadius = UDim.new(0, 5)
+
+        -- Status Banner Card
+        local statusCard = Instance.new("Frame")
+        statusCard.Size = UDim2.new(1, -28, 0, 38)
+        statusCard.Position = UDim2.new(0, 14, 0, 174)
+        statusCard.BackgroundColor3 = Color3.fromRGB(16, 16, 21)
+        statusCard.BorderSizePixel = 0
+        statusCard.ZIndex = 3
+        statusCard.Parent = body
+        Instance.new("UICorner", statusCard).CornerRadius = UDim.new(0, 7)
+        local stStroke = Instance.new("UIStroke", statusCard)
+        stStroke.Color = Color3.fromRGB(36, 36, 46)
+
+        local statusDot = Instance.new("Frame")
+        statusDot.Size = UDim2.new(0, 7, 0, 7)
+        statusDot.Position = UDim2.new(0, 11, 0.5, -3.5)
+        statusDot.BackgroundColor3 = Color3.fromRGB(207, 199, 186)
+        statusDot.BorderSizePixel = 0
+        statusDot.ZIndex = 4
+        statusDot.Parent = statusCard
+        Instance.new("UICorner", statusDot).CornerRadius = UDim.new(0, 4)
 
         local statusLbl = Instance.new("TextLabel")
-        statusLbl.Size = UDim2.new(1, -32, 0, 38)
-        statusLbl.Position = UDim2.new(0, 16, 0, 108)
+        statusLbl.Size = UDim2.new(1, -32, 1, -4)
+        statusLbl.Position = UDim2.new(0, 25, 0, 2)
         statusLbl.BackgroundTransparency = 1
         statusLbl.Font = Enum.Font.GothamMedium
-        statusLbl.TextSize = 11
+        statusLbl.TextSize = 10
         statusLbl.TextColor3 = Color3.fromRGB(207, 199, 186)
         statusLbl.TextWrapped = true
         statusLbl.TextXAlignment = Enum.TextXAlignment.Left
-        statusLbl.Text = "Siap memverifikasi key."
-        statusLbl.Parent = win
+        statusLbl.Text = "Siap memverifikasi lisensi pada perangkat ini."
+        statusLbl.ZIndex = 4
+        statusLbl.Parent = statusCard
 
         local loginBtn = Instance.new("TextButton")
-        loginBtn.Size = UDim2.new(1, -32, 0, 36)
-        loginBtn.Position = UDim2.new(0, 16, 0, 156)
+        loginBtn.Size = UDim2.new(1, -28, 0, 40)
+        loginBtn.Position = UDim2.new(0, 14, 0, 222)
         loginBtn.BackgroundColor3 = Color3.fromRGB(245, 239, 230)
         loginBtn.BorderSizePixel = 0
         loginBtn.Font = Enum.Font.GothamBold
-        loginBtn.TextSize = 13
-        loginBtn.TextColor3 = Color3.fromRGB(11, 11, 13)
-        loginBtn.Text = "VERIFIKASI & JALANKAN"
-        loginBtn.Parent = win
-        Instance.new("UICorner", loginBtn).CornerRadius = UDim.new(0, 6)
+        loginBtn.TextSize = 12
+        loginBtn.TextColor3 = Color3.fromRGB(11, 11, 14)
+        loginBtn.Text = "AKTIVASI & JALANKAN"
+        loginBtn.AutoButtonColor = false
+        loginBtn.ZIndex = 3
+        loginBtn.Parent = body
+        Instance.new("UICorner", loginBtn).CornerRadius = UDim.new(0, 8)
+        loginBtn.MouseEnter:Connect(function()
+            TweenService:Create(loginBtn, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(255, 252, 245) }):Play()
+        end)
+        loginBtn.MouseLeave:Connect(function()
+            TweenService:Create(loginBtn, TweenInfo.new(0.12), { BackgroundColor3 = Color3.fromRGB(245, 239, 230) }):Play()
+        end)
+
+        local footL = Instance.new("TextLabel")
+        footL.Size = UDim2.new(0.6, 0, 0, 14)
+        footL.Position = UDim2.new(0, 14, 1, -22)
+        footL.BackgroundTransparency = 1
+        footL.Font = Enum.Font.Gotham
+        footL.TextSize = 9
+        footL.TextColor3 = Color3.fromRGB(105, 105, 120)
+        footL.TextXAlignment = Enum.TextXAlignment.Left
+        footL.Text = "Dominion Auth · AES-256 + HMAC"
+        footL.ZIndex = 3
+        footL.Parent = body
+
+        local footR = Instance.new("TextLabel")
+        footR.Size = UDim2.new(0.35, 0, 0, 14)
+        footR.Position = UDim2.new(0.65, -14, 1, -22)
+        footR.BackgroundTransparency = 1
+        footR.Font = Enum.Font.GothamBold
+        footR.TextSize = 9
+        footR.TextColor3 = Color3.fromRGB(130, 130, 146)
+        footR.TextXAlignment = Enum.TextXAlignment.Right
+        footR.Text = "Auto-Save Key"
+        footR.ZIndex = 3
+        footR.Parent = body
 
         local function setStatus(msg, col)
+            local c = col or Color3.fromRGB(207, 199, 186)
             if statusLbl and statusLbl.Parent then
                 statusLbl.Text = tostring(msg or "")
-                statusLbl.TextColor3 = col or Color3.fromRGB(207, 199, 186)
+                statusLbl.TextColor3 = c
+            end
+            if statusDot and statusDot.Parent then
+                statusDot.BackgroundColor3 = c
             end
         end
 
@@ -480,7 +778,7 @@
                 else
                     local errTxt = okRun and msg or ("Runtime error: " .. tostring(ok))
                     setStatus(errTxt, Color3.fromRGB(248, 113, 113))
-                    loginBtn.Text = "VERIFIKASI & JALANKAN"
+                    loginBtn.Text = "AKTIVASI & JALANKAN"
                     busy = false
                 end
             end)
