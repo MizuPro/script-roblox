@@ -1,6 +1,6 @@
 -- [[ .dominion X Licensed Loader ]]
 -- https://github.com/MizuPro/script-roblox
-;(function()
+(function()
     local okBoot, errBoot = pcall(function()
         print("[.dominion X Loader] Memulai aktivasi...")
         local API_BASE = "https://dominion-auth.vercel.app"
